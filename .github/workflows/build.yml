@@ -11,26 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ---------------------------------------------
-      # 1. Récupérer le code source
-      # ---------------------------------------------
       - name: Checkout du dépôt
         uses: actions/checkout@v4
 
-      # ---------------------------------------------
-      # 2. Compiler l'APK avec Buildozer
-      #    (utilise Docker en interne → environnement propre)
-      # ---------------------------------------------
       - name: Compiler avec Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
+        uses: ArtemSBulgakov/buildozer-action@v1.1.3 # Utilisation de la version v1.1.3
         id: buildozer
         with:
           command: buildozer -v android debug
           workdir: .
 
-      # ---------------------------------------------
-      # 3. Uploader l'APK comme artifact
-      # ---------------------------------------------
       - name: Uploader l'APK
         uses: actions/upload-artifact@v4
         with:
