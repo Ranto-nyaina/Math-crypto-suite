@@ -24,8 +24,20 @@ jobs:
             libncursesw5-dev cmake libffi-dev libssl-dev
           pip install buildozer cython==0.29.36
 
+      - name: Accept Android SDK licenses
+        run: |
+          mkdir -p ~/.android
+          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > ~/.android/android-sdk-license
+          echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> ~/.android/android-sdk-license
+          echo "8933bad161af4178b1185d1a37fbf41ea5269c55" >> ~/.android/android-sdk-license
+          mkdir -p ~/.buildozer/android/platform
+          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > ~/.buildozer/android/platform/android-sdk-license
+          echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> ~/.buildozer/android/platform/android-sdk-license
+          echo "8933bad161af4178b1185d1a37fbf41ea5269c55" >> ~/.buildozer/android/platform/android-sdk-license
+
       - name: Build APK
-        run: buildozer -v android debug
+        run: |
+          yes | buildozer -v android debug 2>&1 | tail -200
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
