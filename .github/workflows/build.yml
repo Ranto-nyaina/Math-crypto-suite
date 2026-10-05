@@ -1,4 +1,4 @@
-name: Build APK
+name: Générer un APK
 
 on:
   push:
@@ -7,40 +7,34 @@ on:
 
 jobs:
   build-android:
-    runs-on: ubuntu-22.04
+    name: Build APK Android
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      # ---------------------------------------------
+      # 1. Récupérer le code source
+      # ---------------------------------------------
+      - name: Checkout du dépôt
+        uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      # ---------------------------------------------
+      # 2. Compiler l'APK avec Buildozer
+      #    (utilise Docker en interne → environnement propre)
+      # ---------------------------------------------
+      - name: Compiler avec Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
         with:
-          python-version: '3.11'
+          command: buildozer -v android debug
+          workdir: .
 
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk \
-            autoconf libtool pkg-config zlib1g-dev libncurses5-dev \
-            libncursesw5-dev cmake libffi-dev libssl-dev
-          pip install buildozer cython==0.29.36
-
-      - name: Accept Android SDK licenses
-        run: |
-          mkdir -p ~/.android
-          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > ~/.android/android-sdk-license
-          echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> ~/.android/android-sdk-license
-          echo "8933bad161af4178b1185d1a37fbf41ea5269c55" >> ~/.android/android-sdk-license
-          mkdir -p ~/.buildozer/android/platform
-          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > ~/.buildozer/android/platform/android-sdk-license
-          echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> ~/.buildozer/android/platform/android-sdk-license
-          echo "8933bad161af4178b1185d1a37fbf41ea5269c55" >> ~/.buildozer/android/platform/android-sdk-license
-
-      - name: Build APK
-        run: |
-          yes | buildozer -v android debug 2>&1 | tail -200
-
-      - name: Upload APK
+      # ---------------------------------------------
+      # 3. Uploader l'APK comme artifact
+      # ---------------------------------------------
+      - name: Uploader l'APK
         uses: actions/upload-artifact@v4
         with:
           name: apk-debug
-          path: bin/*.apk
+          path: ${{ steps.buildozer.outputs.filename }}
+          if-no-files-found: error
+          retention-days: 30
