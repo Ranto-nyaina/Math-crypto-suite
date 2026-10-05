@@ -1,0 +1,123 @@
+#:import dp kivy.metrics.dp
+
+<RSAScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "RSA"
+            elevation: 8
+            md_bg_color: app.theme_cls.primary_color
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+
+        ScrollView:
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(16)
+                spacing: dp(14)
+                size_hint_y: None
+                height: self.minimum_height
+
+                MDLabel:
+                    text: "1. Génération des clés"
+                    font_style: "H6"
+                    bold: True
+                    adaptive_height: True
+
+                MDTextField:
+                    id: p_field
+                    hint_text: "p (nombre premier)"
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDTextField:
+                    id: q_field
+                    hint_text: "q (nombre premier)"
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDTextField:
+                    id: e_field
+                    hint_text: "e (premier avec φ(n))"
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDRaisedButton:
+                    text: "GÉNÉRER LES CLÉS"
+                    pos_hint: {"center_x": .5}
+                    on_release: root.generer()
+
+                MDCard:
+                    orientation: "vertical"
+                    padding: dp(16)
+                    spacing: dp(6)
+                    radius: [dp(16)]
+                    elevation: 2
+                    md_bg_color: app.theme_cls.bg_normal
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDLabel:
+                        id: public_label
+                        text: "Clé publique : —"
+                        adaptive_height: True
+
+                    MDLabel:
+                        id: private_label
+                        text: "Clé privée : —"
+                        adaptive_height: True
+
+                    MDLabel:
+                        id: phi_label
+                        text: "φ(n) = —"
+                        theme_text_color: "Secondary"
+                        adaptive_height: True
+
+                MDLabel:
+                    text: "2. Chiffrement"
+                    font_style: "H6"
+                    bold: True
+                    adaptive_height: True
+
+                MDTextField:
+                    id: msg_field
+                    hint_text: "Message M (entier)"
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDRaisedButton:
+                    text: "CHIFFRER"
+                    pos_hint: {"center_x": .5}
+                    on_release: root.chiffrer()
+
+                MDLabel:
+                    id: chiffre_label
+                    text: "Message chiffré C = —"
+                    font_style: "H6"
+                    theme_text_color: "Primary"
+                    adaptive_height: True
+
+                MDLabel:
+                    text: "3. Déchiffrement"
+                    font_style: "H6"
+                    bold: True
+                    adaptive_height: True
+
+                MDTextField:
+                    id: chiffre_field
+                    hint_text: "Message chiffré C"
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDRaisedButton:
+                    text: "DÉCHIFFRER"
+                    pos_hint: {"center_x": .5}
+                    on_release: root.dechiffrer()
+
+                MDLabel:
+                    id: dechiffre_label
+                    text: "Message déchiffré M = —"
+                    font_style: "H6"
+                    theme_text_color: "Primary"
+                    adaptive_height: True

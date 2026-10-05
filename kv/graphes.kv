@@ -1,0 +1,68 @@
+#:import dp kivy.metrics.dp
+
+<GraphesScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Graphes"
+            elevation: 8
+            md_bg_color: app.theme_cls.primary_color
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+
+        ScrollView:
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(16)
+                spacing: dp(14)
+                size_hint_y: None
+                height: self.minimum_height
+
+                MDLabel:
+                    text: "Format : Sommet: voisin1, voisin2"
+                    font_style: "Caption"
+                    theme_text_color: "Secondary"
+                    adaptive_height: True
+
+                MDTextField:
+                    id: graphe_field
+                    hint_text: "A: B,C\nB: A,C,D\nC: A,B\nD: B"
+                    mode: "rectangle"
+                    multiline: True
+                    size_hint_y: None
+                    height: dp(160)
+
+                MDRaisedButton:
+                    text: "CALCULER LES DEGRÉS"
+                    pos_hint: {"center_x": .5}
+                    on_release: root.calculer()
+
+                MDCard:
+                    orientation: "vertical"
+                    padding: dp(16)
+                    spacing: dp(8)
+                    radius: [dp(16)]
+                    elevation: 2
+                    md_bg_color: app.theme_cls.bg_normal
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDLabel:
+                        text: "DEGRÉS"
+                        font_style: "Caption"
+                        theme_text_color: "Secondary"
+                        adaptive_height: True
+
+                    MDLabel:
+                        id: degres_label
+                        text: "—"
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        adaptive_height: True
+
+                    MDLabel:
+                        id: somme_label
+                        text: "Somme des degrés = —"
+                        font_style: "Subtitle1"
+                        adaptive_height: True

@@ -1,0 +1,104 @@
+#:import dp kivy.metrics.dp
+
+<ModuleCard>:
+    orientation: "horizontal"
+    padding: dp(16)
+    spacing: dp(16)
+    size_hint_y: None
+    height: dp(96)
+    radius: [dp(16)]
+    elevation: 3
+    ripple_behavior: True
+    md_bg_color: app.theme_cls.bg_normal
+    on_release: app.go_to(root.target_screen)
+
+    MDIcon:
+        icon: root.icon_name
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primary_color
+        font_size: dp(34)
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {"center_y": .5}
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(2)
+        pos_hint: {"center_y": .5}
+
+        MDLabel:
+            text: root.title_text
+            font_style: "H6"
+            bold: True
+            theme_text_color: "Primary"
+            adaptive_height: True
+
+        MDLabel:
+            text: root.subtitle_text
+            theme_text_color: "Secondary"
+            font_style: "Caption"
+            adaptive_height: True
+
+
+<HomeScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Math & Crypto Suite"
+            elevation: 8
+            md_bg_color: app.theme_cls.primary_color
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["shield-lock-outline", lambda x: None]]
+
+        ScrollView:
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(16)
+                spacing: dp(12)
+                size_hint_y: None
+                height: self.minimum_height
+
+                MDLabel:
+                    text: "Choisissez un module"
+                    font_style: "Subtitle1"
+                    theme_text_color: "Secondary"
+                    adaptive_height: True
+
+                ModuleCard:
+                    title_text: "Chiffrement"
+                    subtitle_text: "ASCII & chiffre de César"
+                    icon_name: "lock-outline"
+                    target_screen: "chiffrement"
+
+                ModuleCard:
+                    title_text: "RSA"
+                    subtitle_text: "Chiffrement asymétrique"
+                    icon_name: "key-variant"
+                    target_screen: "rsa"
+
+                ModuleCard:
+                    title_text: "Arithmétique"
+                    subtitle_text: "PGCD, PPCM, nombres premiers"
+                    icon_name: "calculator-variant-outline"
+                    target_screen: "arithmetique"
+
+                ModuleCard:
+                    title_text: "Ensembles"
+                    subtitle_text: "Union, intersection, image"
+                    icon_name: "set-merge"
+                    target_screen: "ensembles"
+
+                ModuleCard:
+                    title_text: "Graphes"
+                    subtitle_text: "Degrés et somme des degrés"
+                    icon_name: "graph-outline"
+                    target_screen: "graphes"
+
+                MDLabel:
+                    text: "v1.0 — Projet éducatif"
+                    halign: "center"
+                    theme_text_color: "Hint"
+                    font_style: "Caption"
+                    adaptive_height: True
+                    padding_y: dp(12)

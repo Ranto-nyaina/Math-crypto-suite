@@ -1,0 +1,120 @@
+#:import dp kivy.metrics.dp
+
+<ChiffrementScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Chiffrement"
+            elevation: 8
+            md_bg_color: app.theme_cls.primary_color
+            specific_text_color: 1, 1, 1, 1
+            left_action_items: [["arrow-left", lambda x: app.go_back()]]
+
+        ScrollView:
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(16)
+                spacing: dp(14)
+                size_hint_y: None
+                height: self.minimum_height
+
+                MDLabel:
+                    text: "Chiffre de César"
+                    font_style: "H6"
+                    bold: True
+                    adaptive_height: True
+
+                MDTextField:
+                    id: message_field
+                    hint_text: "Message à traiter"
+                    mode: "rectangle"
+
+                MDTextField:
+                    id: decalage_field
+                    hint_text: "Décalage (nombre entier)"
+                    input_filter: "int"
+                    mode: "rectangle"
+
+                MDBoxLayout:
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(48)
+
+                    MDRaisedButton:
+                        text: "CHIFFRER"
+                        size_hint_x: 1
+                        on_release: root.chiffrer()
+
+                    MDFlatButton:
+                        text: "DÉCHIFFRER"
+                        size_hint_x: 1
+                        on_release: root.dechiffrer()
+
+                MDCard:
+                    orientation: "vertical"
+                    padding: dp(16)
+                    spacing: dp(6)
+                    radius: [dp(16)]
+                    elevation: 2
+                    md_bg_color: app.theme_cls.bg_normal
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDLabel:
+                        text: "RÉSULTAT"
+                        font_style: "Caption"
+                        theme_text_color: "Secondary"
+                        adaptive_height: True
+
+                    MDLabel:
+                        id: cesar_label
+                        text: "—"
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        adaptive_height: True
+
+                MDLabel:
+                    text: "Représentation ASCII"
+                    font_style: "H6"
+                    bold: True
+                    adaptive_height: True
+
+                MDRaisedButton:
+                    text: "AFFICHER LE CODE ASCII"
+                    pos_hint: {"center_x": .5}
+                    on_release: root.afficher_ascii()
+
+                MDCard:
+                    orientation: "vertical"
+                    padding: dp(16)
+                    spacing: dp(6)
+                    radius: [dp(16)]
+                    elevation: 2
+                    md_bg_color: app.theme_cls.bg_normal
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MDLabel:
+                        text: "CODES ASCII"
+                        font_style: "Caption"
+                        theme_text_color: "Secondary"
+                        adaptive_height: True
+
+                    MDLabel:
+                        id: ascii_label
+                        text: "—"
+                        adaptive_height: True
+
+                    MDLabel:
+                        text: "RECONVERTI EN TEXTE"
+                        font_style: "Caption"
+                        theme_text_color: "Secondary"
+                        adaptive_height: True
+
+                    MDLabel:
+                        id: ascii_back_label
+                        text: "—"
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        adaptive_height: True
