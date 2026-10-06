@@ -8,6 +8,11 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
+=======
+    timeout-minutes: 90
+
+>>>>>>> 8f087db (Fix: update build)
     steps:
       - uses: actions/checkout@v4
 
@@ -22,11 +27,35 @@ jobs:
             pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 \
             cmake libffi-dev libssl-dev
 
+<<<<<<< HEAD
       - name: Installer Buildozer
         run: pip install buildozer cython==0.29.37
 
       - name: Compiler
         run: buildozer -v android debug
+=======
+      - name: Cache Buildozer
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer
+            .buildozer
+          key: buildozer-${{ hashFiles('buildozer.spec') }}
+          restore-keys: buildozer-
+
+      - name: Installer Buildozer
+        run: pip install buildozer cython==0.29.37
+
+      - name: Compiler (3 essais max)
+        run: |
+          for i in 1 2 3; do
+            echo "=== Essai $i ==="
+            buildozer -v android debug && exit 0
+            echo "Échec essai $i, nouvelle tentative dans 30 s"
+            sleep 30
+          done
+          exit 1
+>>>>>>> 8f087db (Fix: update build)
 
       - uses: actions/upload-artifact@v4
         with:
