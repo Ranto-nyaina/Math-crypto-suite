@@ -8,17 +8,11 @@ on:
 jobs:
   build-android:
     name: Build APK Android
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout du dépôt
         uses: actions/checkout@v4
-
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
 
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
@@ -40,34 +34,28 @@ jobs:
           echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > ~/.android/android-sdk-license
           echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> ~/.android/android-sdk-license
           echo "8933bad161af4178b1185d1a37fbf41ea5269c55" >> ~/.android/android-sdk-license
-          mkdir -p ~/.buildozer/android/packages
-          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > ~/.buildozer/android/platform/android-sdk-license 2>/dev/null || true
 
       - name: Pré-télécharger freetype (contournement savannah.gnu.org)
         run: |
           mkdir -p ~/.buildozer/android/packages
           cd ~/.buildozer/android/packages
-          # Essayer plusieurs miroirs
-          wget -q https://mirror.csclub.uwaterloo.ca/gnu/freetype/freetype-2.10.1.tar.gz || \
+          # Utiliser un miroir fiable au lieu de savannah.gnu.org
+          wget -q https://bigsearcher.com/mirrors/nongnu/freetype/freetype-2.10.1.tar.gz || \
           wget -q https://ftp.gnu.org/gnu/freetype/freetype-2.10.1.tar.gz || \
-          wget -q https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz
-          ls -la
+          wget -q https://download-mirror.savannah.gnu.org/releases/freetype/freetype-old/freetype-2.5.5.tar.bz2
 
       - name: Compiler avec Buildozer
-        run: |
-          yes | buildozer -v android debug 2>&1 | tee build.log
-        env:
-          JAVA_HOME: ${{ env.JAVA_HOME }}
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          command: buildozer -v android debug
+          workdir: .
+          buildozer_version: stable
 
       - name: Uploader l'APK
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: apk-debug
-          path: bin/*.apk
+          path: ${{ steps.buildozer.outputs.filename }}
           if-no-files-found: error
           retention-days: 30
-
-      - name: Afficher les logs en cas d'échec
-        if: failure()
-        run: tail -100 build.log
