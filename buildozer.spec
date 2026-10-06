@@ -12,8 +12,8 @@ requirements = python3==3.11.9,hostpython3==3.11.9,kivy==2.3.0,kivymd==1.1.1,pil
 
 orientation = portrait
 fullscreen = 0
-icon.filename = %(source.dir)s/assets/icon.jpeg         
-presplash.filename = %(source.dir)s/assets/icon.jpeg     
+icon.filename = %(source.dir)s/assets/icon.jpeg
+presplash.filename = %(source.dir)s/assets/icon.jpeg
 
 android.permissions = 
 android.api = 33
