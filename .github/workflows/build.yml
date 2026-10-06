@@ -24,6 +24,15 @@ jobs:
             pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 \
             cmake libffi-dev libssl-dev
 
+      - name: Réseau (IPv6 désactivé + test)
+        run: |
+          sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+          sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+          for h in www.python.org github.com pypi.org dl.google.com; do
+            printf "%s -> " "$h"
+            curl -4 -sS -o /dev/null -w "%{http_code}\n" --max-time 15 "https://$h" || echo "ECHEC"
+          done
+
       - name: Cache Buildozer
         uses: actions/cache@v4
         with:
@@ -40,11 +49,17 @@ jobs:
         run: |
           for i in 1 2 3; do
             echo "=== Essai $i ==="
-            buildozer -v android debug && exit 0
-            echo "Échec essai $i, nouvelle tentative dans 30 s"
+            buildozer -v android debug 2>&1 | tee "build-$i.log"
+            [ "${PIPESTATUS[0]}" -eq 0 ] && exit 0
             sleep 30
           done
           exit 1
+
+      - name: URL fautive
+        if: failure()
+        run: |
+          grep -h "Downloading" build-*.log | tail -5
+          grep -h -B3 "Download failed" build-*.log | head -20
 
       - uses: actions/upload-artifact@v4
         with:
