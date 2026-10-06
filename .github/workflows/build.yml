@@ -14,17 +14,19 @@ jobs:
       - name: Checkout du dépôt
         uses: actions/checkout@v4
 
-      - name: Compiler avec Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1.1.3 # Version stable avec correctifs
-        id: buildozer
-        with:
-          command: yes | buildozer -v android debug
-          workdir: .
+      - name: Compiler l'APK avec Docker (en root)
+        run: |
+          docker run --rm \
+            --user root \
+            -e HOST_UID=0 \
+            -e HOST_GID=0 \
+            -v "${{ github.workspace }}":/home/user/hostcwd \
+            kivy/buildozer android debug
 
       - name: Uploader l'APK
         uses: actions/upload-artifact@v4
         with:
           name: apk-debug
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
           if-no-files-found: error
           retention-days: 30
