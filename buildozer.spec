@@ -1,5 +1,5 @@
 [app]
-title = Math & Crypto Suite
+title = Math and Crypto Suite
 package.name = mathcryptosuite
 package.domain = org.edu
 
