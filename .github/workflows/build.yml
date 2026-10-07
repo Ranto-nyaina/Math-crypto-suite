@@ -35,8 +35,8 @@ jobs:
           path: |
             ~/.buildozer
             .buildozer
-          key: buildozer-v2-${{ hashFiles('buildozer.spec') }}
-          restore-keys: buildozer-v2-
+          key: buildozer-v3-${{ hashFiles('buildozer.spec') }}
+          restore-keys: buildozer-v3-
 
       - name: Pré-télécharger freetype (miroirs)
         run: |
