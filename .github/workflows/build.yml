@@ -8,7 +8,7 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
 
     steps:
       - uses: actions/checkout@v4
@@ -20,18 +20,14 @@ jobs:
       - name: Dépendances système
         run: |
           sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool \
-            pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 \
-            cmake libffi-dev libssl-dev
+          sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf automake libtool \
+            libltdl-dev pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 \
+            cmake libffi-dev libssl-dev build-essential
 
-      - name: Réseau (IPv6 désactivé + test)
+      - name: Désactiver IPv6
         run: |
           sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
           sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
-          for h in www.python.org github.com pypi.org dl.google.com; do
-            printf "%s -> " "$h"
-            curl -4 -sS -o /dev/null -w "%{http_code}\n" --max-time 15 "https://$h" || echo "ECHEC"
-          done
 
       - name: Cache Buildozer
         uses: actions/cache@v4
@@ -39,27 +35,43 @@ jobs:
           path: |
             ~/.buildozer
             .buildozer
-          key: buildozer-${{ hashFiles('buildozer.spec') }}
-          restore-keys: buildozer-
+          key: buildozer-v2-${{ hashFiles('buildozer.spec') }}
+          restore-keys: buildozer-v2-
+
+      - name: Pré-télécharger freetype (miroirs)
+        run: |
+          D=.buildozer/android/platform/build-arm64-v8a/packages/freetype
+          mkdir -p "$D" && cd "$D"
+          F=freetype-2.10.1.tar.gz
+          if [ -f ".mark-$F" ] && [ -f "$F" ]; then
+            echo "Déjà en cache"; exit 0
+          fi
+          for u in \
+            "https://download.savannah.gnu.org/releases/freetype/$F" \
+            "https://download-mirror.savannah.gnu.org/releases/freetype/$F" \
+            "https://sourceforge.net/projects/freetype/files/freetype2/2.10.1/$F/download" \
+            "https://mirrors.sarata.com/non-gnu/freetype/$F"; do
+            echo "Essai $u"
+            if curl -4 -fL --retry 2 --max-time 120 -o "$F" "$u" && tar tzf "$F" >/dev/null; then
+              touch ".mark-$F"; echo "OK"; break
+            fi
+            rm -f "$F"
+          done
+          ls -la
 
       - name: Installer Buildozer
         run: pip install buildozer cython==0.29.37
 
-      - name: Compiler (3 essais max)
+      - name: Compiler
         run: |
-          for i in 1 2 3; do
-            echo "=== Essai $i ==="
-            buildozer -v android debug 2>&1 | tee "build-$i.log"
-            [ "${PIPESTATUS[0]}" -eq 0 ] && exit 0
-            sleep 30
-          done
-          exit 1
+          buildozer -v android debug 2>&1 | tee build.log
+          exit ${PIPESTATUS[0]}
 
-      - name: URL fautive
+      - name: Extrait de l'erreur
         if: failure()
         run: |
-          grep -h "Downloading" build-*.log | tail -5
-          grep -h -B3 "Download failed" build-*.log | head -20
+          grep -n -m5 -E "error:|Error|Traceback" build.log || true
+          tail -n 40 build.log
 
       - uses: actions/upload-artifact@v4
         with:
