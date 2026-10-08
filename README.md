@@ -195,37 +195,36 @@ math_crypto_suite/
 
 ## 📸 Captures d'écran
 
-<p align="center">
-  <img src="docs/home.jpg" alt="Accueil" width="180"/>
-  &nbsp;&nbsp;
-  <img src="docs/chiffrement.jpg" alt="Chiffrement" width="180"/>
-  &nbsp;&nbsp;
-  <img src="docs/rsa.jpg" alt="RSA" width="180"/>
-</p>
-
-<p align="center">
-  <sub><b>🏠 Accueil</b></sub>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <sub><b>🔒 Chiffrement</b></sub>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <sub><b>🔑 RSA</b></sub>
-</p>
-
-<p align="center">
-  <img src="docs/arithmetique.jpg" alt="Arithmétique" width="180"/>
-  &nbsp;&nbsp;
-  <img src="docs/ensembles.jpg" alt="Ensembles" width="180"/>
-  &nbsp;&nbsp;
-  <img src="docs/graphes.jpg" alt="Graphes" width="180"/>
-</p>
-
-<p align="center">
-  <sub><b>🧮 Arithmétique</b></sub>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <sub><b>🎲 Ensembles</b></sub>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <sub><b>🕸️ Graphes</b></sub>
-</p>
+<table align="center">
+  <tr>
+    <td align="center" width="200">
+      <sub><b>🏠 Accueil</b></sub><br/>
+      <img src="docs/home.jpg" width="180"/>
+    </td>
+    <td align="center" width="200">
+      <sub><b>🔒 Chiffrement</b></sub><br/>
+      <img src="docs/chiffrement.jpg" width="180"/>
+    </td>
+    <td align="center" width="200">
+      <sub><b>🔑 RSA</b></sub><br/>
+      <img src="docs/rsa.jpg" width="180"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="200">
+      <sub><b>🧮 Arithmétique</b></sub><br/>
+      <img src="docs/arithmetique.jpg" width="180"/>
+    </td>
+    <td align="center" width="200">
+      <sub><b>🎲 Ensembles</b></sub><br/>
+      <img src="docs/ensembles.jpg" width="180"/>
+    </td>
+    <td align="center" width="200">
+      <sub><b>🕸️ Graphes</b></sub><br/>
+      <img src="docs/graphes.jpg" width="180"/>
+    </td>
+  </tr>
+</table>
 
 ---
 
