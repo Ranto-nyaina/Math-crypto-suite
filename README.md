@@ -95,7 +95,8 @@ Le projet suit une architecture **monolithique côté client** : toute la logiqu
 - **Buildozer 1.5+** — génération de l'APK Android
 - **python-for-android** — moteur de conversion Python → Android
 - **OpenJDK 17** + **Android SDK 33** + **NDK 25b**
-- **GitHub Actions** — build automatique à chaque `push`
+- **Docker** — build reproductible en local
+- **GitHub Actions** — automatisation possible
 
 ---
 
@@ -129,8 +130,16 @@ math_crypto_suite/
 ├── assets/
 │   └── icon.jpeg            # Icône de l'application
 │
+├── docs/                    # Captures d'écran
+│   ├── home.jpg
+│   ├── chiffrement.jpg
+│   ├── rsa.jpg
+│   ├── arithmetique.jpg
+│   ├── ensembles.jpg
+│   └── graphes.jpg
+│
 └── .github/workflows/
-    └── build.yml            # Build APK automatique via GitHub Actions
+    └── build.yml            # (optionnel) Build automatique
 ```
 
 ---
@@ -184,6 +193,20 @@ math_crypto_suite/
 
 ---
 
+## 📸 Captures d'écran
+
+| 🏠 Accueil | 🔒 Chiffrement | 🔑 RSA |
+|---|---|---|
+| ![Accueil](docs/home.jpg) | ![Chiffrement](docs/chiffrement.jpg) | ![RSA](docs/rsa.jpg) |
+
+| 🧮 Arithmétique | 🎲 Ensembles | 🕸️ Graphes |
+|---|---|---|
+| ![Arithmétique](docs/arithmetique.jpg) | ![Ensembles](docs/ensembles.jpg) | ![Graphes](docs/graphes.jpg) |
+
+> 💡 Pour ajouter vos propres captures, placez les images dans `docs/` et nommez-les comme indiqué ci-dessus.
+
+---
+
 ## 🧠 Choix de conception — séparation logique / interface
 
 La logique métier est isolée dans le dossier `core/`, sans aucune dépendance à Kivy. Chaque fichier correspond à un domaine fonctionnel unique :
@@ -213,47 +236,38 @@ pip install kivy==2.3.0 kivymd==1.1.1 pillow
 python main.py
 ```
 
-### Compiler l'APK Android
+### Compiler l'APK Android — Méthode Docker (recommandée)
 
-**Prérequis** : Ubuntu 22.04, WSL2 ou Google Colab.
+**Prérequis** : Docker Desktop installé.
 
 ```bash
-# Installer Buildozer
-pip install buildozer cython==0.29.36
-
-# Compiler l'APK (premier build : 25-45 min)
-buildozer -v android debug
-
-# L'APK est généré dans :
-# bin/mathcryptosuite-1.0.0-debug.apk
+cd math_crypto_suite
+docker run --rm -v ${PWD}:/home/user/hostcwd kivy/buildozer android debug
+# → bin/mathcryptosuite-1.0.0-debug.apk
 ```
 
-### Build automatique via GitHub Actions
+### Compiler l'APK Android — Méthode native (Ubuntu 22.04)
 
-Chaque `git push` sur la branche `main` déclenche la compilation de l'APK.  
-Récupérez-le dans l'onglet **[Actions](https://github.com/Ranto-nyaina/Math-crypto-suite/actions)** → **Artifacts** → `apk-debug.zip`.
+```bash
+pip install buildozer cython==0.29.36
+buildozer -v android debug
+```
 
 ---
 
 ## 📥 Télécharger l'APK
 
-### 🔧 Build automatique
+### 🔧 Build local (recommandé)
 
-L'APK est généré automatiquement par **GitHub Actions** à chaque `push` sur la branche `main`.
+Une fois le build terminé, l'APK se trouve dans :
 
-**Pour récupérer l'APK une fois le build terminé :**
+```text
+bin/mathcryptosuite-1.0.0-debug.apk
+```
 
-1. Allez sur l'onglet **[Actions](https://github.com/Ranto-nyaina/Math-crypto-suite/actions)**
-2. Cliquez sur le dernier workflow ✅ **vert**
-3. Descendez en bas de la page → section **Artifacts**
-4. Cliquez sur **`apk-debug`** pour télécharger le ZIP
-5. Décompressez → vous obtenez `mathcryptosuite-1.0.0-debug.apk`
+### 📦 Releases GitHub
 
-⏱️ **Durée du build** : 20 à 40 minutes pour le premier, 5-10 minutes ensuite.
-
-### 📦 Releases
-
-Une fois le premier build réussi, l'APK sera également disponible dans l'onglet **[Releases](https://github.com/Ranto-nyaina/Math-crypto-suite/releases)** pour un téléchargement direct.
+L'APK sera disponible dans l'onglet **[Releases](https://github.com/Ranto-nyaina/Math-crypto-suite/releases)** une fois le premier build publié.
 
 ### 📱 Installer l'APK sur Android
 
@@ -280,18 +294,12 @@ adb logcat -s python:V kivy:V AndroidRuntime:E
 
 ### 📊 Alternatives pour compiler l'APK
 
-| Méthode | Avantage | Lien |
+| Méthode | Avantage | Fiabilité |
 |---|---|---|
-| **GitHub Actions** | Automatique, gratuit | [Actions](https://github.com/Ranto-nyaina/Math-crypto-suite/actions) |
-| **Google Colab** | Simple, sans installation | [Colab](https://colab.research.google.com) |
-| **Docker local** | Contrôle total | `docker run --rm -v "$PWD":/home/user/hostcwd kivy/buildozer android debug` |
-| **Ubuntu natif** | Le plus rapide | `buildozer -v android debug` |
-
----
-
-## 📸 Captures d'écran
-
-*À compléter avec vos propres captures d'écran.*
+| **Docker local** | Contrôle total, réseau non filtré | ✅ 95 % |
+| **Ubuntu natif** | Le plus rapide | ✅ 95 % |
+| **Google Colab** | Simple, sans installation | ⚠️ Instable |
+| **GitHub Actions** | Automatique, gratuit | ⚠️ Fragile |
 
 ---
 
@@ -337,7 +345,7 @@ adb logcat -s python:V kivy:V AndroidRuntime:E
 - Algorithmique arithmétique (Euclide, primalité, modularité)
 - Théorie des ensembles et des graphes
 - Génération d'APK avec Buildozer
-- Automatisation de build via GitHub Actions
+- Conteneurisation Docker
 - Git / GitHub
 
 ---
@@ -387,6 +395,7 @@ Voir le fichier [LICENSE](LICENSE) pour plus d'informations.
 - L'équipe [**KivyMD**](https://kivymd.readthedocs.io/) pour les composants Material Design
 - La communauté [**Buildozer**](https://buildozer.readthedocs.io/) pour le build Android
 - [**python-for-android**](https://python-for-android.readthedocs.io/) pour la conversion Python → Android
+- [**Docker**](https://www.docker.com/) pour les builds reproductibles
 
 ---
 
