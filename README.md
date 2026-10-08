@@ -195,13 +195,28 @@ math_crypto_suite/
 
 ## 📸 Captures d'écran
 
-| 🏠 Accueil | 🔒 Chiffrement | 🔑 RSA |
-|---|---|---|
-| ![Accueil](docs/home.jpg) | ![Chiffrement](docs/chiffrement.jpg) | ![RSA](docs/rsa.jpg) |
-
-| 🧮 Arithmétique | 🎲 Ensembles | 🕸️ Graphes |
-|---|---|---|
-| ![Arithmétique](docs/arithmetique.jpg) | ![Ensembles](docs/ensembles.jpg) | ![Graphes](docs/graphes.jpg) |
+<table>
+  <tr>
+    <td align="center"><b>🏠 Accueil</b></td>
+    <td align="center"><b>🔒 Chiffrement</b></td>
+    <td align="center"><b>🔑 RSA</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/home.jpg" width="100%"/></td>
+    <td><img src="docs/chiffrement.jpg" width="100%"/></td>
+    <td><img src="docs/rsa.jpg" width="100%"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>🧮 Arithmétique</b></td>
+    <td align="center"><b>🎲 Ensembles</b></td>
+    <td align="center"><b>🕸️ Graphes</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/arithmetique.jpg" width="100%"/></td>
+    <td><img src="docs/ensembles.jpg" width="100%"/></td>
+    <td><img src="docs/graphes.jpg" width="100%"/></td>
+  </tr>
+</table>
 
 > 💡 Pour ajouter vos propres captures, placez les images dans `docs/` et nommez-les comme indiqué ci-dessus.
 
