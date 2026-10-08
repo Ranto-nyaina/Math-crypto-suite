@@ -10,6 +10,22 @@ Application mobile Android permettant d'explorer de manière interactive les not
 
 ---
 
+## 📸 Captures d'écran
+
+<p align="center">
+  <img src="docs/home.jpg" alt="Accueil" width="30%"/>
+  <img src="docs/chiffrement.jpg" alt="Chiffrement" width="30%"/>
+  <img src="docs/rsa.jpg" alt="RSA" width="30%"/>
+</p>
+
+<p align="center">
+  <img src="docs/arithmetique.jpg" alt="Arithmétique" width="30%"/>
+  <img src="docs/ensembles.jpg" alt="Ensembles" width="30%"/>
+  <img src="docs/graphes.jpg" alt="Graphes" width="30%"/>
+</p>
+
+---
+
 ## 🎯 Objectif du projet
 
 L'apprentissage de la cryptographie et des mathématiques discrètes reste souvent théorique : les étudiants manipulent des formules abstraites sans visualiser concrètement les mécanismes sous-jacents (comment un chiffrement transforme un message, comment RSA génère une clé, comment un graphe se structure).
@@ -190,20 +206,6 @@ math_crypto_suite/
 - Dialogues d'erreur Material Design
 - Thème Material You (M3) avec palette Indigo/Teal
 - Interface 100 % réactive et hors-ligne
-
----
-
-## 📸 Captures d'écran
-
-| 🏠 Accueil | 🔒 Chiffrement | 🔑 RSA |
-|---|---|---|
-| ![Accueil](docs/home.jpg) | ![Chiffrement](docs/chiffrement.jpg) | ![RSA](docs/rsa.jpg) |
-
-| 🧮 Arithmétique | 🎲 Ensembles | 🕸️ Graphes |
-|---|---|---|
-| ![Arithmétique](docs/arithmetique.jpg) | ![Ensembles](docs/ensembles.jpg) | ![Graphes](docs/graphes.jpg) |
-
-> 💡 Pour ajouter vos propres captures, placez les images dans `docs/` et nommez-les comme indiqué ci-dessus.
 
 ---
 
